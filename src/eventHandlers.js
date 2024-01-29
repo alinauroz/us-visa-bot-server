@@ -2,16 +2,18 @@ const { get, update } = require("./db");
 
 exports.handleDates = async (dates) => {
     const availableDates = (dates.split(",").map(date => date.trim()));
-    const dbDates = get("dates");
-    const existingDates = dbDates.flat();
+    const users = await get("users");
 
-    const newDates = availableDates.filter(d => {
-        return existingDates.indexOf(d) === -1;
+    const startDates = users.map(user => new Date(user.startDate).getTime());
+    const endDates = users.map(user => new Date(user.endDate).getTime());
+
+    const minStart = Math.min(...startDates);
+    const maxEnd = Math.max(...endDates);
+
+    const requiredDates = availableDates.filter(date => {
+        const ts = (new Date(date)).getTime();
+        return ts >= minStart && ts <= maxEnd;
     });
-
-    const updatedDates = dbDates.slice(-100);
-    updatedDates.push(availableDates);
-    update("dates", updatedDates);
-    console.log(newDates);
-    console.log("UpdatedDates", updatedDates);
+    console.log(availableDates.length, requiredDates);
 }
+
