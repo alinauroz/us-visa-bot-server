@@ -17,3 +17,14 @@ exports.handleDates = async (dates) => {
     console.log(availableDates.length, requiredDates);
 }
 
+exports.handleReshudule = async (response) => {
+    const data = JSON.parse(response);
+    console.log(data);
+    const users = await get("users");
+    const user = users.find(user => user.email === data.email);
+    console.log(user);
+    if (user) {
+        user.endDate = data.date;
+        await update("users", users);
+    }
+}
