@@ -21,7 +21,7 @@ app.use(bodyParser.json());
         });
         console.log("Working...")
     });
-});
+})();
 
 app.post("/bot-events", async (req, res) => {
     const { event, data } = req.body;
