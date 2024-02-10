@@ -1,10 +1,12 @@
+require("dotenv").config();
+
 const express = require("express");
 const bodyParser = require("body-parser");
 const { EVENT_DATES, EVENT_RESCHEDULED } = require("./constants");
 const { handleDates, handleReshudule } = require("./eventHandlers");
 const { get } = require("./db");
 const { spawn } = require('child_process');
-require("dotenv").config();
+require("./services/bot");
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
