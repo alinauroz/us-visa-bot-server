@@ -28,10 +28,9 @@ exports.handleReshudule = async (response) => {
     const data = JSON.parse(response);
     const users = await get("users");
     const user = users.find(user => user.email === data.email);
-    console.log(user);
+    const newUsers = users.filter(user => user.email !== data.email);
     if (user) {
-        user.endDate = data.date;
-        await update("users", users);
+        await update("users", newUsers);
         sendAlert(
             `*✅ Appoint Rescheduled*\n`
             + `Email: _${data.email}_\n`
