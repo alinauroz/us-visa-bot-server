@@ -15,10 +15,11 @@ app.use(bodyParser.json());
 
 async function callService () {
     const users = await get("users");
-    const path = process.env.PATH;
+    const bookerPath = process.env.BOOKER_PATH;
+    console.log("Path", bookerPath);
     users.forEach(user => {
         const arguments = [user.email, user.password, user.startDate, user.endDate];
-        const pythonProcess = spawn('python3', [path, ...arguments]);
+        const pythonProcess = spawn('python3', [bookerPath, ...arguments]);
         pythonProcess.stdout.on('data', (data) => {
             console.log(`Python Script Output: ${data}`);
         });
