@@ -15,12 +15,15 @@ exports.handleDates = async (dates) => {
         const ts = (new Date(date)).getTime();
         return ts >= minStart && ts <= maxEnd;
     });
-    console.log(availableDates.length, availableDates);
-    if (availableDates.length > 0) {
+
+    if (requiredDates.length > 0) {
         sendAlert(
             `* 📆 Available Dates:\n\n*`
-            + availableDates.join("\n"),
+            + requiredDates.join("\n"),
         );
+    }
+    else {
+        console.log("Not sending...")
     }
 }
 

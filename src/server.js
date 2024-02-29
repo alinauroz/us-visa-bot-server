@@ -6,13 +6,14 @@ const { EVENT_DATES, EVENT_RESCHEDULED } = require("./constants");
 const { handleDates, handleReshudule } = require("./eventHandlers");
 const { get } = require("./db");
 const { spawn } = require('child_process');
+const cron = require("node-cron");
 require("./services/bot");
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-(async function() {
+async function callService () {
     const users = await get("users");
     const path = "/Users/nauroz/Documents/freelance/talha973/us_visa_scheduler/visa.py";
     users.forEach(user => {
@@ -23,7 +24,10 @@ app.use(bodyParser.json());
         });
         console.log("Working...")
     });
-})();
+}
+
+//const cronJob = cron.schedule('* * * * *', callService);
+callService();
 
 app.post("/bot-events", async (req, res) => {
     const { event, data } = req.body;

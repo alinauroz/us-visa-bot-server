@@ -10,7 +10,8 @@ bot.onText(/\/start/, (msg) => {
 
     const keyboard = [
         ['👤 View Users'],
-        ['➕ Add User']
+        ['➕ Add User'],
+        ['🗑️ Delete User']
     ];
     const replyMarkup = {
         keyboard: keyboard,
@@ -36,6 +37,8 @@ bot.onText(/.*/, (msg) => {
     const currentCommand = command;
     command = "";
 
+    console.log(currentCommand)
+
     if (currentCommand === "ADD_USER") {
         const input = msg.text.split(" ");
         if (input.length !== 4) {
@@ -53,12 +56,24 @@ bot.onText(/.*/, (msg) => {
         update("users", users);
         bot.sendMessage(msg.chat.id, "User added");
     }
+    else if (currentCommand === "DELETE_USER") {
+        const email = msg.text;
+        const users = get("users");
+        const newUsers = users.filter(user => user.email !== email);
+        update("users", newUsers);
+        bot.sendMessage(msg.chat.id, "User deleted");
+    }
 
 });
 
 bot.onText(/➕ Add User/, (msg) => {
     bot.sendMessage(msg.chat.id, "Send user info");
     command = "ADD_USER"
+});
+
+bot.onText(/🗑️ Delete User/, (msg) => {
+    bot.sendMessage(msg.chat.id, "Enter email of the user who you want to remove:");
+    command = "DELETE_USER"
 });
 
 const sendAlert = (msg) => {
