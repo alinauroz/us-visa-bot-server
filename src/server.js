@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 
 async function callService () {
     const users = await get("users");
-    const path = "/Users/nauroz/Documents/freelance/talha973/us_visa_scheduler/visa.py";
+    const path = process.env.PATH;
     users.forEach(user => {
         const arguments = [user.email, user.password, user.startDate, user.endDate];
         const pythonProcess = spawn('python3', [path, ...arguments]);
