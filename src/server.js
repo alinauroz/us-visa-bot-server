@@ -18,7 +18,7 @@ async function callService () {
     const bookerPath = process.env.BOOKER_PATH;
     console.log("Path", bookerPath);
     users.forEach(user => {
-        const arguments = [user.email, user.password, user.startDate, user.endDate];
+        const arguments = [user.email, user.password, user.startDate, user.endDate, user.scheduleId];
         const pythonProcess = spawn('python3', [bookerPath, ...arguments]);
         pythonProcess.stdout.on('data', (data) => {
             console.log(`Python Script Output: ${data}`);

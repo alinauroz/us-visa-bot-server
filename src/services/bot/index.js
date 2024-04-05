@@ -23,11 +23,10 @@ bot.onText(/\/start/, (msg) => {
 
 bot.onText(/👤 View Users/, (msg) => {
     const users = get("users");
-    console.log(users);
     bot.sendMessage(
         msg.chat.id, 
         `List of users:\n`
-        + users.map(user => `${user.email} _(${user.startDate} - ${user.endDate})_`).join("\n\n"),
+        + users.map(user => `${user.email} _(${user.startDate} - ${user.endDate}) - ${user.scheduleId || "No schedule id"}_`).join("\n\n"),
         {
         parse_mode: "Markdown"
         });
@@ -37,33 +36,36 @@ bot.onText(/.*/, (msg) => {
     const currentCommand = command;
     command = "";
 
-    console.log(currentCommand)
-
     if (currentCommand === "ADD_USER") {
         const input = msg.text.split(" ");
-        if (input.length !== 4) {
+        if (input.length !== 5) {
             command = currentCommand;
             return bot.sendMessage(msg.chat.id, "Invalid User Input");
         }
-        const [email, password, startDate, endDate] = input;
+        const [email, password, startDate, endDate, scheduleId] = input;
         const users = get("users");
         users.push({
             email,
             password,
             startDate,
             endDate,
+            scheduleId,
         });
         update("users", users);
         bot.sendMessage(msg.chat.id, "User added");
     }
     else if (currentCommand === "DELETE_USER") {
-        const email = msg.text;
+        const [email, scheduleId] = msg.text.split(" ");
+        if (typeof email === "undefined" || typeof scheduleId === "undefined") {
+            command = currentCommand;
+            bot.sendMessage(msg.chat.id, "Please enter email and schedule id");
+            return;
+        }
         const users = get("users");
-        const newUsers = users.filter(user => user.email !== email);
+        const newUsers = users.filter(user => !(user.email === email && user.scheduleId === scheduleId));
         update("users", newUsers);
         bot.sendMessage(msg.chat.id, "User deleted");
     }
-
 });
 
 bot.onText(/➕ Add User/, (msg) => {
@@ -72,7 +74,7 @@ bot.onText(/➕ Add User/, (msg) => {
 });
 
 bot.onText(/🗑️ Delete User/, (msg) => {
-    bot.sendMessage(msg.chat.id, "Enter email of the user who you want to remove:");
+    bot.sendMessage(msg.chat.id, "Enter email and schedule id of the user who you want to remove:");
     command = "DELETE_USER"
 });
 
