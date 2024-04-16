@@ -31,7 +31,7 @@ exports.handleReshudule = async (response) => {
     const data = JSON.parse(response);
     const users = await get("users");
     const user = users.find(user => user.email === data.email);
-    const newUsers = users.filter(user => user.email !== data.email);
+    const newUsers = users.filter(user => !(user.email === data.email && user.scheduleId === data.scheduleId));
     if (user) {
         await update("users", newUsers);
         sendAlert(
