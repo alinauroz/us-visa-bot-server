@@ -26,7 +26,7 @@ async function callService () {
         console.log("Working...")
     });
 }
-callService();
+//callService();
 const cronJob = cron.schedule('*/2 * * * *', callService);
 
 app.post("/bot-events", async (req, res) => {
