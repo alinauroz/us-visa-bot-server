@@ -7,6 +7,7 @@ let command = "";
 
 bot.onText(/\/start/, (msg) => {
     const chatId = msg.chat.id;
+    console.log("Chad Id", chatId);
 
     const keyboard = [
         ['👤 View Users'],

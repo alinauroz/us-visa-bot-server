@@ -12,22 +12,24 @@ require("./services/bot");
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+let embassy = "en-ae-abd";
 
 async function callService () {
     const users = await get("users");
     const bookerPath = process.env.BOOKER_PATH;
     console.log("Path", bookerPath);
     users.forEach(user => {
-        const arguments = [user.email, user.password, user.startDate, user.endDate, user.scheduleId];
+        const arguments = [user.email, user.password, user.startDate, user.endDate, user.scheduleId, embassy];
         const pythonProcess = spawn('python3', [bookerPath, ...arguments]);
         pythonProcess.stdout.on('data', (data) => {
             console.log(`Python Script Output: ${data}`);
         });
-        console.log("Working...")
+        console.log("Working...");
     });
+    embassy = embassy === "en-ae-abd" ? "en-ae-dbu" : "en-ae-abd";
 }
-//callService();
-const cronJob = cron.schedule('*/2 * * * *', callService);
+callService();
+const cronJob = cron.schedule('*/1 * * * *', callService);
 
 app.post("/bot-events", async (req, res) => {
     const { event, data } = req.body;
