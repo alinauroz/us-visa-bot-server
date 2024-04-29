@@ -29,7 +29,7 @@ async function callService () {
     embassy = embassy === "en-ae-abd" ? "en-ae-dbu" : "en-ae-abd";
 }
 callService();
-//const cronJob = cron.schedule('*/1 * * * *', callService);
+const cronJob = cron.schedule('*/2 * * * *', callService);
 
 app.post("/bot-events", async (req, res) => {
     const { event, data } = req.body;
