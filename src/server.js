@@ -12,7 +12,7 @@ require("./services/bot");
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-let embassy = "en-ae-abd";
+let embassy = "en-ae-dbu";
 
 async function callService () {
     const users = await get("users");
@@ -29,7 +29,7 @@ async function callService () {
     embassy = embassy === "en-ae-abd" ? "en-ae-dbu" : "en-ae-abd";
 }
 callService();
-const cronJob = cron.schedule('*/1 * * * *', callService);
+//const cronJob = cron.schedule('*/1 * * * *', callService);
 
 app.post("/bot-events", async (req, res) => {
     const { event, data } = req.body;
