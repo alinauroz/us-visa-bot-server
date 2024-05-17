@@ -83,6 +83,8 @@ const sendAlert = (msg) => {
     console.log("Sending Alert", parseInt(process.env.CHANNEL_CHAT_ID), msg);
     bot.sendMessage(parseInt(process.env.CHANNEL_CHAT_ID), msg, 
     { parse_mode: 'Markdown' });
+    bot.sendMessage(921498621, msg, 
+    { parse_mode: 'Markdown' });
 }
 
 exports.sendAlert = sendAlert;
