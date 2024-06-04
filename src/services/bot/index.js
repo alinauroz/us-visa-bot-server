@@ -34,6 +34,8 @@ bot.onText(/👤 View Users/, (msg) => {
         });
 });
 
+bot.on("polling_error", (msg) => console.log(msg));
+
 bot.onText(/.*/, (msg) => {
     const currentCommand = command;
     command = "";
