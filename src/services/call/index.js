@@ -1,4 +1,5 @@
 exports.callMobile = function () {
+    return;
     const accountSid = process.env.T_SID;
     const authToken = process.env.T_SECRET;
     const client = require("twilio")(accountSid, authToken);
