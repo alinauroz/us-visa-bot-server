@@ -1,5 +1,6 @@
 const TelegramBot = require("node-telegram-bot-api");
 const { get, update } = require("../../db");
+const { callMobile } = require("../call");
 
 const bot = new TelegramBot(process.env.BOT_TOKEN, { polling: true });
 
@@ -81,6 +82,7 @@ bot.onText(/🗑️ Delete User/, (msg) => {
 
 const sendAlert = (msg) => {
     console.log("Sending Alert", parseInt(process.env.CHANNEL_CHAT_ID), msg);
+    callMobile();
     bot.sendMessage(parseInt(process.env.CHANNEL_CHAT_ID), msg, 
     { parse_mode: 'Markdown' });
 }
